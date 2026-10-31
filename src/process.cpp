@@ -1,5 +1,4 @@
 #include "process.h"
-#include "linux_parser.h"
 
 #include <unistd.h>
 
@@ -8,25 +7,25 @@
 #include <string>
 #include <vector>
 
+#include "linux_parser.h"
+
 using std::string;
 using std::to_string;
 using std::vector;
 
 // Return this process's ID
-int Process::Pid() {
-  return pid_;
-}
+int Process::Pid() { return pid_; }
 
 // Return this process's CPU utilization
-float Process::CpuUtilization() { 
+float Process::CpuUtilization() {
   long uptime = LinuxParser::UpTime(pid_);
-   if (uptime <= 0) {
-    
+  if (uptime <= 0) {
     return 0.0f;
   } else {
     long ticks = sysconf(_SC_CLK_TCK);
-    float cpu_time_s = static_cast<float>(LinuxParser::ActiveJiffies(pid_)) / ticks;
-    
+    float cpu_time_s =
+        static_cast<float>(LinuxParser::ActiveJiffies(pid_)) / ticks;
+
     return cpu_time_s / uptime;
   }
 }
@@ -44,6 +43,4 @@ string Process::User() { return LinuxParser::User(pid_); }
 long int Process::UpTime() { return LinuxParser::UpTime(pid_); }
 
 // Overload the "less than" comparison operator for Process objects
-bool Process::operator<(Process const& a) const {
-  return this->pid_ < a.pid_;
-}
+bool Process::operator<(Process const& a) const { return this->pid_ < a.pid_; }
