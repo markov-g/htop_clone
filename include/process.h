@@ -8,7 +8,7 @@ It contains relevant attributes as shown below
 */
 class Process {
  public:
-  explicit Process(int pid) : pid_(pid) {}
+  explicit Process(int pid) : pid_(pid) { cpu_ = this->CpuUtilization(); }
 
   int Pid();
   std::string User();
@@ -20,6 +20,7 @@ class Process {
 
  private:
   int pid_;
+  float cpu_;
 };
 
 #endif
